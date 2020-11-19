@@ -13,9 +13,12 @@ import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.common.dao.PropTableDAO;
+import com.common.dto.RequestDO;
 import com.common.entity.Employee;
 
 @RestController
@@ -25,12 +28,56 @@ public class RestCont {
 	@Autowired
 	BaseDAO basedao;
 	
+	@Autowired
+	PropTableDAO proptabledao;
+	
+	
+	@CrossOrigin
+	@GetMapping("/getKey")
+	public String getKey(String key) {
+		return "Value :"+proptabledao.getKey(key);
+	}
+	
+	@CrossOrigin
+	@GetMapping("/addKeyValue")
+	public String getKey(String key,String value,String pass) {
+		if(CommonValidations.isNotNull(pass) && pass.equals("admin")) {
+			
+			if(proptabledao.addNewKey(key, value)) {
+				return "success";
+			}else {
+				return "Fail please check logs";
+			}
+			
+			
+		}else{
+			return "Please Enter valid password";
+		}
+	}
+	
+	
+	
+	
 	@CrossOrigin
 	@GetMapping("/test")
 	public List test(String data) throws ParseException, AddressException, MessagingException, URISyntaxException, IOException {
-		
-		
-		return null;
+		System.out.println("hii");
+		List<String> ls=new ArrayList<String>();
+		ls.add("sucesss");
+		ls.add(data);
+		return ls;
+	}
+	@CrossOrigin
+	@PostMapping("/testPostRequest")
+	public List testPostRequest(RequestDO req) throws ParseException, AddressException, MessagingException, URISyntaxException, IOException {
+		System.out.println("hii");
+		List<String> ls=new ArrayList<String>();
+		ls.add("sucesss");	
+		ls.add(req.getStrData());
+		ls.add(req.getDateData().toString());
+		ls.add(req.getFileData().getOriginalFilename());
+		ls.add(req.getFileData().getSize()+"");
+		return ls;
 	}
 	
 	

@@ -28,9 +28,9 @@ public class BaseDAO {
 		return emf.unwrap(SessionFactory.class);
 	}
 	
-	private EntityManager getEntityManager() {
-		return emf.unwrap(EntityManager.class);
-	}
+//	private EntityManager getEntityManager() {
+//		return emf.unwrap(EntityManager.class);
+//	}
 	
 	public boolean insert(Object obj) {
 		app.info("Insert Method start");
